@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from libmat import libdist
 from libmat.distance_matrix import Matrix
 from libmat.msn2 import MinimumSpanningNetwork

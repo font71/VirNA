@@ -31,11 +31,11 @@ python3 setup.py build_ext --inplace
 
 The **format.py** script is provided as an example to convert some multiple alignment file format in fasta required by minspan.py:
 
--i, --input FILE
-&nbsp;&nbsp;&nbsp;&nbsp;The multiple alignment file
--o, --output FILE
-&nbsp;&nbsp;&nbsp;&nbsp;The output file in json format
--f, --inputformat [clustal | maf | nexus | stockholm | phylip-relaxed]
-&nbsp;&nbsp;&nbsp;&nbsp;The format of input file
--h, --help
-&nbsp;&nbsp;&nbsp;&nbsp;Print this help
+-i, --input FILE  
+&nbsp;&nbsp;&nbsp;&nbsp;The multiple alignment file  
+-o, --output FILE  
+&nbsp;&nbsp;&nbsp;&nbsp;The output file in json format  
+-f, --inputformat [clustal | maf | nexus | stockholm | phylip-relaxed]  
+&nbsp;&nbsp;&nbsp;&nbsp;The format of input file  
+-h, --help  
+&nbsp;&nbsp;&nbsp;&nbsp;Print this help  

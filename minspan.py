@@ -25,6 +25,7 @@ def usage():
    print("     Print this help")
    
 
+mfsin = None
 prefix = ''
 mutf = 'variants'
 distf = 'matrix.csv'
@@ -60,7 +61,10 @@ for opt, arg in opts:
 if len(sys.argv[1:]) == 0:
    usage()
    sys.exit(1)
-
+elif mfsin is None:
+   usage()
+   sys.exit(1)
+   
 if prefix:
    mutf = prefix + '-' + mutf
    distf = prefix + '-' + distf

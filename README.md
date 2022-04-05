@@ -5,6 +5,7 @@
 The following python packages are required by the tool:  
 pip3 install numpy  
 pip3 install pandas  
+pip3 install networkx  
 pip3 install biopython  
 pip3 install cython  
 pip3 install python-igraph  

@@ -10,7 +10,7 @@ def usage():
     print(" -i, --input FILE")
     print("     The multiple alignment file")
     print(" -o, --output FILE")
-    print("     The output file in json format")
+    print("     The output file in fasta format")
     print(" -f, --inputformat [clustal | maf | nexus | stockholm | phylip-relaxed]")
     print("     The format of input file")
     print(" -h, --help")

@@ -16,6 +16,9 @@ cd libmat
 
 python3 setup.py build_ext --inplace
 
+>A docker image is also available on Docker Hub. To run the containar cd into the directory with multiple alignment in fasta format and execute the following command:
+docker run --rm -v "$PWD:/data" -u \`id -u\`:\`id -g\` biocompapp/virna minspan.py -m /data/\<fasta file\>
+
 ### Usage
 **minspan.py** command line arguments:
 

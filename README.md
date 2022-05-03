@@ -4,9 +4,10 @@
  The multiple alignment header file must have the following format:
  \>Location/IDentifier/date
 
-### Install
+## Install
 
-The following python packages are required by the tool:  
+To be installed VirNA requiree python 3 (<https://www.python.org/>) and the installation of the following python packages:
+
 pip3 install numpy  
 pip3 install pandas  
 pip3 install networkx  
@@ -14,14 +15,21 @@ pip3 install biopython
 pip3 install cython  
 pip3 install python-igraph  
 
-cd libmat
+git clone <https://github.com/font71/VirNA>
+cd VirNA/libmat
 
 python3 setup.py build_ext --inplace
+
+To test that the tool is working properly do the following:
+cd ..
+./minspan.py -m 1000.fasta
+
+Two files should be written in the examples directory: msn.gml and variants. The first one contains the Minimum Spanning Network produced by the tool which can be visualized with specific network visualizers such as Cytoscape (<https://cytoscape.org/>). The second one contains all the mutations individuated in the analyzed genome sequences.
 
 >A docker image is also available on Docker Hub. To run the containar cd into the directory with multiple alignment in fasta format and execute the following command:
 docker run --rm -v "$PWD:/data" -u \`id -u\`:\`id -g\` biocompapp/virna minspan.py -m /data/\<fasta file\>
 
-### Usage
+## Usage
 
 **minspan.py** command line arguments:
 
@@ -51,7 +59,7 @@ The **format.py** script is provided as an example to convert some multiple alig
 
 ### Performance
 
-Some trivial performance test was performed on a laptop equipped with 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz and 32 GB of RAM. VirNA was compared with other two tools, PopArt (http://popart.otago.ac.nz/) and Pegas (http://ape-package.ird.fr/pegas.html) considering only the execution times. The results are reported in thw following table (the time is expressed in min:sec):
+Some trivial performance test was performed on a laptop equipped with 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz and 32 GB of RAM. VirNA was compared with other two tools, PopArt (<http://popart.otago.ac.nz/>) and Pegas (<http://ape-package.ird.fr/pegas.html>) considering only the execution times. The results are reported in thw following table (the time is expressed in min:sec):
 
 |Sequence number |  PopArt  |  Pegas  |  VirNA  |
 | ---------------| -------- | ------- | ------- |

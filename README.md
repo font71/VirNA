@@ -26,7 +26,7 @@ cd ..
 
 Two files should be written in the examples directory: msn.gml and variants. The first one contains the Minimum Spanning Network produced by the tool which can be visualized with specific network visualizers such as Cytoscape (<https://cytoscape.org/>). The second one contains all the mutations individuated in the analyzed genome sequences.
 
->A docker image is also available on Docker Hub. To run the containar cd into the directory with multiple alignment in fasta format and execute the following command:
+>A docker image is also available on Docker Hub (https://hub.docker.com/r/biocompapp/virna). To run the containar cd into the directory with multiple alignment in fasta format and execute the following command:
 docker run --rm -v "$PWD:/data" -u \`id -u\`:\`id -g\` biocompapp/virna minspan.py -m /data/\<fasta file\>
 
 ## Usage
@@ -56,6 +56,12 @@ The **format.py** script is provided as an example to convert some multiple alig
 &nbsp;&nbsp;&nbsp;&nbsp;The format of input file  
 -h, --help  
 &nbsp;&nbsp;&nbsp;&nbsp;Print this help  
+
+### Algorithm description
+
+The construction of the minimum spanning network is based on (Bandelt et al., 1999). For each multiple alignment, provided as input, a Hamming distance matrix is built and used as input for the reconstruction of a minimum spanning network, where nodes represent the unique sequences and the links minimize the total distance (measured by the number of mutations between connected sequences) spanned by the network. The outcome is a path that minimizes the number of mutations required to reproduce the observed data. To avoid the connection between two sequences that present homoplasy events two nodes are connected only if the mutations of the first one are also contained in the second one.
+![Algorithm description](/img/fig.png)
+In the figure is represented an exemplicative viral network where nodes labeled with A: includes only genomes belonging to the area under investigation, while nodes labeled with E: includes only genomes sampled outside the considered area. Subscript indicate the mutations carried by the haplotype V. Edge connecting A/E {V1, V2, V3} central node and E {V1, V2, V4, V5} is pruned because E does not contain haplotypes coming from geographical area A.
 
 ### Performance
 

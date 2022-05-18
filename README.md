@@ -61,6 +61,7 @@ The **format.py** script is provided as an example to convert some multiple alig
 
 The construction of the minimum spanning network is based on (Bandelt et al., 1999). For each multiple alignment, provided as input, a Hamming distance matrix is built and used as input for the reconstruction of a minimum spanning network, where nodes represent the unique sequences and the links minimize the total distance (measured by the number of mutations between connected sequences) spanned by the network. The outcome is a path that minimizes the number of mutations required to reproduce the observed data. To avoid the connection between two sequences that present homoplasy events two nodes are connected only if the mutations of the first one are also contained in the second one.
 ![Algorithm description](/img/fig.png)
+
 In the figure is represented an exemplicative viral network where nodes labeled with A: includes only genomes belonging to the area under investigation, while nodes labeled with E: includes only genomes sampled outside the considered area. Subscript indicate the mutations carried by the haplotype V. Edge connecting A/E {V1, V2, V3} central node and E {V1, V2, V4, V5} is pruned because E does not contain haplotypes coming from geographical area A.
 
 ### Performance

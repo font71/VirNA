@@ -46,7 +46,7 @@ docker run --rm -v "$PWD:/data" -u \`id -u\`:\`id -g\` biocompapp/virna minspan.
 -h, --help  
 &nbsp;&nbsp;&nbsp;&nbsp;Print this help  
 
-The **format.py** script is provided as an example to convert some multiple alignment file format in fasta required by minspan.py:
+The **format.py** script is provided as an example to convert some multiple alignment file format in fasta required by minspan.py. This script accepts as input multiple alignment files in the most common formats and transforms them in fasta required by VirNA:
 
 -i, --input FILE  
 &nbsp;&nbsp;&nbsp;&nbsp;The multiple alignment file  
@@ -66,7 +66,7 @@ In the figure is represented an exemplicative viral network where nodes labeled 
 
 ### Performance
 
-Some trivial performance test was performed on a laptop equipped with 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz and 32 GB of RAM. VirNA was compared with other two tools, PopArt (<http://popart.otago.ac.nz/>) and Pegas (<http://ape-package.ird.fr/pegas.html>) considering only the execution times. The results are reported in thw following table (the time is expressed in min:sec):
+Some trivial performance test was performed on a laptop equipped with 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz and 32 GB of RAM. VirNA was compared with other two tools, PopArt (<http://popart.otago.ac.nz/>) and Pegas (<http://ape-package.ird.fr/pegas.html>) considering only the execution times. The results are reported in the following table (the time is expressed in min:sec):
 
 |Sequence number |  PopArt  |  Pegas  |  VirNA  |
 | ---------------| -------- | ------- | ------- |

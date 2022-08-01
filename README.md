@@ -34,7 +34,7 @@ docker run --rm -v "$PWD:/data" -u \`id -u\`:\`id -g\` biocompapp/virna minspan.
 **minspan.py** command line arguments:
 
 -m, --msa FILE  
-&nbsp;&nbsp;&nbsp;&nbsp;The multiple alignment file in fasta format (Mandatory)  
+&nbsp;&nbsp;&nbsp;&nbsp;The multiple alignment file in fasta format (Mandatory. The input must be ASCII-encoded as required by GML specification)  
 -p, --prefix STR  
 &nbsp;&nbsp;&nbsp;&nbsp;The string to attach to every output files (default: "")  
 -x, --matrix  

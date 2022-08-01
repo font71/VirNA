@@ -23,11 +23,14 @@ def usage():
    print("     The multiple alignment will be trimmed at both ends using this value(default value 90)")
    print(" -i, --maxiter INT")
    print("     Maximum number of iterations to perform during MSN building")
+   print(" -l, --local FILE")
+   print("     File with local IDs")
    print(" -h, --help")
    print("     Print this help")
    
 
 mfsin = None
+flocal = None
 outdir = None
 prefix = ''
 mutf = 'variants'
@@ -35,12 +38,13 @@ distf = 'matrix.csv'
 inmsn = 'inmsn'
 gmlf = 'tmp_msn.gml'
 finalgml = 'msn.gml'
+freport = 'msn_report'
 writematrix = False
 th = 90
 maxiter = 100
 
 try:
-   opts, args = getopt.getopt(sys.argv[1:], "m:o:p:b:xi:h", ["msa=", "outdir=", "prefix=", "borderth=", "writematrix", "maxiter=", "help"])
+   opts, args = getopt.getopt(sys.argv[1:], "m:o:p:b:xi:l:h", ["msa=", "outdir=", "prefix=", "borderth=", "writematrix", "maxiter=", "local=", "help"])
 except getopt.GetoptError:
    usage()
    sys.exit()
@@ -57,6 +61,8 @@ for opt, arg in opts:
       writematrix = True
    elif opt in ('-i', '--maxiter'):
       maxiter = int(arg)
+   elif opt in ('-l', '--local'):
+      flocal = arg
    elif opt in ('-h', '--help'):
       usage()
       sys.exit(0)
@@ -82,6 +88,7 @@ if prefix:
    inmsn = prefix + '-' + inmsn
    gmlf = prefix + '-' + gmlf
    finalgml = prefix + '-' + finalgml
+   freport = prefix + '-' + freport
 
 matrix, mutations = libdist.read_msa(mfsin, th)
 mfh = open(outdir + '/' + mutf, 'w')
@@ -102,7 +109,10 @@ msn = MinimumSpanningNetwork(outdir + '/' + inmsn, outdir + '/' + mutf)
 g = msn.create_graph(maxIter = maxiter)
 msn.export_directed_graph(outdir + '/' + gmlf)
 
-GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + finalgml)
+if flocal is None:
+   GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + finalgml)
+else:
+   GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + finalgml, freport, flocal)
 
 os.remove(outdir + '/' + inmsn)
 os.remove(outdir + '/' + gmlf)

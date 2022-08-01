@@ -43,6 +43,8 @@ docker run --rm -v "$PWD:/data" -u \`id -u\`:\`id -g\` biocompapp/virna minspan.
 &nbsp;&nbsp;&nbsp;&nbsp;The multiple alignment will be trimmed at both ends using this value  (default value 90)  
 -i, --maxiter INT  
 &nbsp;&nbsp;&nbsp;&nbsp;Maximum number of iterations to perform during MSN building  
+-l, --local FILE  
+&nbsp;&nbsp;&nbsp;&nbsp;File containing sequence IDs to consider for entry/exit analisys  
 -h, --help  
 &nbsp;&nbsp;&nbsp;&nbsp;Print this help  
 

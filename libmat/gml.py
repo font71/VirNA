@@ -1,20 +1,23 @@
 import networkx as nx
 import datetime
+import json
 
 
 class GMLParser:
-    def __init__(self, fgml, mutf, outgml, freport=None, flocal=None):
+    def __init__(self, fgml, mutf, finmsn, outgml, freport=None, flocal=None):
         nodedates = dict()
 
         self.meta = self.read_mutations(mutf)
+        self.identicalnodes = self.read_inmsn(finmsn)
 
         g = nx.read_gml(fgml, label='name', destringizer=str)
 
         if flocal is None:
             for n in g.nodes:
-                if g.nodes[n]['identicalnodes']:
-                    identicalnodes = g.nodes[n]['identicalnodes'].split(';')
-                    metaslice = {self.meta[x] for x in identicalnodes}
+                if n in self.identicalnodes:
+                # if g.nodes[n]['identicalnodes']:
+                    # identicalnodes = g.nodes[n]['identicalnodes'].split(';')
+                    metaslice = {self.meta[x] for x in self.identicalnodes[n]}
                     metaslice = sorted(metaslice, key=lambda x: x[2])
                     dp = '; '.join([','.join((tup1 , tup2, tup3.strftime('%Y-%m-%d'))) for (tup1, tup2, tup3) in metaslice])
                     g.nodes[n]['identicalnodes'] = dp
@@ -66,24 +69,26 @@ class GMLParser:
         nx.write_gml(g, outgml)
 
     def sort_date(self, node, nodeid):
-        if node['identicalnodes']:
+        if nodeid in self.identicalnodes:
+        # if node['identicalnodes']:
                 loc = ''
                 
-                identicalnodes = node['identicalnodes'].split(';')
+                # identicalnodes = node['identicalnodes'].split(';')
+                identn = self.identicalnodes[nodeid]
 
                 c = 0
-                for n in identicalnodes:
+                for n in identn:
                     if n in self.local:
                         c += 1
 
-                if len(identicalnodes) == c and nodeid in self.local:
+                if len(identn) == c and nodeid in self.local:
                     loc = 'local'
                 elif c == 0 and not nodeid in self.local:
                     loc = 'ext'
                 else:
                     loc = 'mixed'
 
-                metaslice = {self.meta[x] for x in identicalnodes}
+                metaslice = {self.meta[x] for x in identn}
                 metaslice = sorted(metaslice, key=lambda x: x[2])
 
                 dp = '; '.join([','.join((tup1 , tup2, tup3.strftime('%Y-%m-%d'))) for (tup1, tup2, tup3) in metaslice])
@@ -116,6 +121,8 @@ class GMLParser:
                 date = datetime.datetime.strptime(date, '%Y-%m-%d')
 
             meta[hd[1]] = (hd[1], hd[0], date)
+        fh.close()
+        
         return meta
     
     def read_local(self, floc):
@@ -127,5 +134,25 @@ class GMLParser:
         fh.close()
         return loc
 
+    def read_inmsn(self, finmsn):
+        identicalnodes = dict()
+
+        fh = open(finmsn)
+        for i, line in enumerate(fh):
+            if i == 1:
+                line = line.strip()
+                nn = json.loads(line)['nodes']
+            elif i == 2:
+                line = line.strip()
+                ident= json.loads(line)
+        fh.close()
+
+        for i in range(len(nn)):
+            if (str(i)) in ident:
+                identicalnodes[nn[i]] = ident[str(i)]
+
+        return identicalnodes
+
+
 if __name__ == "__main__":
-    GMLParser('../b1_tn-tmp_msn.gml', '../b1_tn-variants', '../prova.gml', '../local', '../report')
+    GMLParser('../out/tn-tmp_msn.gml', '../out/tn-variants', '../out/tn-inmsn', '../out/tn-msn.gml', '../out/report', '../local')

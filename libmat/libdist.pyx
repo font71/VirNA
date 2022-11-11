@@ -1,14 +1,4 @@
-# distutils: language=c++
-from libc.stdio cimport *
 import numpy as np
-
-cdef extern from "stdio.h":
-    #FILE * fopen ( const char * filename, const char * mode )
-    FILE *fopen(const char *, const char *)
-    #int fclose ( FILE * stream )
-    int fclose(FILE *)
-    #ssize_t getline(char **lineptr, size_t *n, FILE *stream);
-    ssize_t getline(char **, size_t *, FILE *)
 
 cdef set alphabet = {'A', 'C', 'G', 'T', '-'}
 cdef dict trans = {'A': 1, 'C': 2, 'G': 3, 'T': 4, '-': 5}
@@ -38,17 +28,20 @@ def read_msa(str msafile, int thborder):
    cdef dict mutations = {}
    cdef str mut
 
-   fh = open(msafile, 'rb')
+   # fh = open(msafile, 'rb')
+   fh = open(msafile, 'r')
 
    while True:
-      line = fh.readline()
-      if not line:
+      # line = fh.readline()
+      l = fh.readline()
+      # if not line:
+      if not l:
          seq, mutation = add(refseq, nuc, thborder)
          matrix[gidpart] = seq
          mutations[gid] = mutation
          break
       
-      l = line.decode('UTF-8')
+      # l = line.decode('UTF-8')
       l = l.rstrip()
 
       if l[0] == '>' and n == 0:

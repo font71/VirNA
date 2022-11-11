@@ -256,7 +256,7 @@ class MinimumSpanningNetwork:
             ident_sizes[int(x)] = len(self._identities[x])
             identical_nodes[int(x)] = ";".join(self._identities[x])
         self._Graph.vs["N_identical"] = ident_sizes
-        self._Graph.vs["identical_nodes"] = identical_nodes
+        # self._Graph.vs["identical_nodes"] = identical_nodes
         self._Graph.vs["location"] = locations
         self._Graph.vs["collection_date"] = dates
         self._Graph.vs["variants"] = variants

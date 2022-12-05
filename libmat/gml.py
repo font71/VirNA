@@ -1,13 +1,14 @@
 import networkx as nx
 import datetime
 import json
+import ast
 
 
 class GMLParser:
     def __init__(self, fgml, mutf, finmsn, outgml, freport=None, flocal=None):
         nodedates = dict()
 
-        self.meta = self.read_mutations(mutf)
+        self.meta, self.mutations = self.read_mutations(mutf)
         self.identicalnodes = self.read_inmsn(finmsn)
 
         g = nx.read_gml(fgml, label='name', destringizer=str)
@@ -21,6 +22,7 @@ class GMLParser:
                     metaslice = sorted(metaslice, key=lambda x: x[2])
                     dp = '; '.join([','.join((tup1 , tup2, tup3.strftime('%Y-%m-%d'))) for (tup1, tup2, tup3) in metaslice])
                     g.nodes[n]['identicalnodes'] = dp
+                g.nodes[n]['variants'] = ','.join(self.mutations[n])
         else:
             self.local = self.read_local(flocal)
             edges = list(g.edges(data=True))
@@ -31,6 +33,8 @@ class GMLParser:
             for e in edges:
                 srcid = e[2]['sourceNM']
                 source = g.nodes[srcid]
+                if 'variants' not in source:
+                    source['variants'] = ','.join(self.mutations[srcid])
                 if not srcid in nodedates:
                     nodedates[srcid] = self.sort_date(source, srcid)
 
@@ -38,6 +42,8 @@ class GMLParser:
                 target = g.nodes[trgid]
                 if not trgid in nodedates:
                     nodedates[trgid] = self.sort_date(target, trgid)
+                if 'variants' not in target:
+                    target['variants'] = ','.join(self.mutations[trgid])
 
                 if nodedates[srcid]['location'] == 'mixed':
                     if not srcid in done:
@@ -104,6 +110,7 @@ class GMLParser:
     def read_mutations(self, mutf):
         fh = open(mutf)
         meta = dict()
+        mutations = dict()
 
         for line in fh:
             line = line.rstrip()
@@ -121,9 +128,10 @@ class GMLParser:
                 date = datetime.datetime.strptime(date, '%Y-%m-%d')
 
             meta[hd[1]] = (hd[1], hd[0], date)
+            mutations[hd[1]] = list(ast.literal_eval(data[1]))
         fh.close()
         
-        return meta
+        return meta, mutations
     
     def read_local(self, floc):
         loc = set()
@@ -153,6 +161,6 @@ class GMLParser:
 
         return identicalnodes
 
-
 if __name__ == "__main__":
     GMLParser('../out/tn-tmp_msn.gml', '../out/tn-variants', '../out/tn-inmsn', '../out/tn-msn.gml', '../out/report', '../local')
+    # GMLParser('../out/33-tmp_msn.gml', '../out/33-variants', '../out/33-inmsn', '../out/33-msn.gml')

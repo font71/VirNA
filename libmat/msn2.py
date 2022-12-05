@@ -2,9 +2,7 @@
 import ast
 import json
 from  igraph import Graph
-import math
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# import math
 
 class MinimumSpanningNetwork:
     def __init__(self,inFile, varFile = None):
@@ -250,8 +248,8 @@ class MinimumSpanningNetwork:
         identical_nodes = ["" for x in self._nodeids]
         locations = [self.annotations[x][0] for x in self._nodeids]
         dates = [self.annotations[x][1] for x in self._nodeids]
-        variants_tmp = [self.variants[x] for x in self._nodeids]
-        variants = [",".join(list(x)) for x in variants_tmp]
+        # variants_tmp = [self.variants[x] for x in self._nodeids]
+        # variants = [",".join(list(x)) for x in variants_tmp]
         for x in self._identities:
             ident_sizes[int(x)] = len(self._identities[x])
             identical_nodes[int(x)] = ";".join(self._identities[x])
@@ -259,7 +257,7 @@ class MinimumSpanningNetwork:
         # self._Graph.vs["identical_nodes"] = identical_nodes
         self._Graph.vs["location"] = locations
         self._Graph.vs["collection_date"] = dates
-        self._Graph.vs["variants"] = variants
+        # self._Graph.vs["variants"] = variants
 
 
 

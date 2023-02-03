@@ -140,8 +140,17 @@ class MinimumSpanningNetwork:
             #edges2add = []
             for e in edges:
                 #if self._Graph.shortest_paths(source=e[0], target=e[1])[0][0] == math.inf:
+
+                #EDITED by Luca (01/02/2023)
+                eType = self.check_edge_type(e[0], e[1])
+                if eType == "BOTH":
+                    continue
+
+                # END EDIT Luca
+                
                 if not __same_component(CC, e[0], e[1], merge = True):
-                    eType = self.check_edge_type(e[0], e[1])
+                    #Removed by Luca (01/02/2023)
+                    #eType = self.check_edge_type(e[0], e[1])
 
                     if eType == 'FWD':
                         #edges2add.append((e[0], e[1]))
@@ -330,9 +339,9 @@ class MinimumSpanningNetwork:
 if __name__ == '__main__':
    import sys
 
-   MSN = MinimumSpanningNetwork(sys.argv[1], sys.argv[2])
-   G = MSN.create_graph(maxIter = 100)
-   MSN.export_directed_graph(sys.argv[3])
-#    MSN = MinimumSpanningNetwork('distances', 'Edited_United_Kingdom_31')
+#    MSN = MinimumSpanningNetwork(sys.argv[1], sys.argv[2])
 #    G = MSN.create_graph(maxIter = 100)
-#    MSN.export_directed_graph('out2.gml')
+#    MSN.export_directed_graph(sys.argv[3])
+   MSN = MinimumSpanningNetwork('SEQS_1-inmsn', 'SEQS_1-variants')
+   G = MSN.create_graph(maxIter = 100)
+   MSN.export_directed_graph('out.gml')

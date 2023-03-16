@@ -5,7 +5,7 @@ import ast
 
 
 class GMLParser:
-    def __init__(self, fgml, mutf, finmsn, outgml, freport=None, flocal=None):
+    def __init__(self, fgml, mutf, finmsn, outgml, freport, flocal=None):
         nodedates = dict()
 
         self.meta, self.mutations = self.read_mutations(mutf)
@@ -14,7 +14,14 @@ class GMLParser:
         g = nx.read_gml(fgml, label='name', destringizer=str)
 
         if flocal is None:
+            message = list()
+
             for n in g.nodes:
+                if len(g.in_edges(n)) > 1:
+                    m = list()
+                    for n1, n2 in g.in_edges(n):
+                        m.append(n1 + '->' + n2)
+                    message.append(n + ' recombination event\t' + '; '.join(m))
                 if n in self.identicalnodes:
                 # if g.nodes[n]['identicalnodes']:
                     # identicalnodes = g.nodes[n]['identicalnodes'].split(';')
@@ -23,6 +30,12 @@ class GMLParser:
                     dp = '; '.join([','.join((tup1 , tup2, tup3.strftime('%Y-%m-%d'))) for (tup1, tup2, tup3) in metaslice])
                     g.nodes[n]['identicalnodes'] = dp
                 g.nodes[n]['variants'] = ','.join(self.mutations[n])
+            
+            if len(message) > 0:
+                fh = open(freport, 'w')
+                for line in message:
+                    fh.write(line + '\n')
+                fh.close()
         else:
             self.local = self.read_local(flocal)
             edges = list(g.edges(data=True))
@@ -30,8 +43,16 @@ class GMLParser:
             fh = open(freport, 'w')
 
             done = set()
+            buffer = set()
             for e in edges:
                 srcid = e[2]['sourceNM']
+                if srcid not in buffer:
+                    if len(g.in_edges(srcid)) > 1:
+                           message = list()
+                           for n1, n2 in g.in_edges(srcid):
+                               message.append(n1 + '->' + n2)
+                           fh.write(srcid + ' recombination event\t' + '; '.join(message) + '\n')
+                           buffer.add(srcid)
                 source = g.nodes[srcid]
                 if 'variants' not in source:
                     source['variants'] = ','.join(self.mutations[srcid])
@@ -39,6 +60,14 @@ class GMLParser:
                     nodedates[srcid] = self.sort_date(source, srcid)
 
                 trgid = e[2]['targetNM']
+                if trgid not in buffer:
+                    if len(g.in_edges(trgid)) > 1:
+                           message = list()
+                           for n1, n2 in g.in_edges(trgid):
+                               message.append(n1 + '->' + n2)
+                           fh.write(trgid + ' recombination event\t' + '; '.join(message) + '\n')
+                           buffer.add(trgid)
+
                 target = g.nodes[trgid]
                 if not trgid in nodedates:
                     nodedates[trgid] = self.sort_date(target, trgid)

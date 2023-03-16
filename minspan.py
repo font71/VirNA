@@ -110,7 +110,7 @@ g = msn.create_graph(maxIter = maxiter)
 msn.export_directed_graph(outdir + '/' + gmlf)
 
 if flocal is None:
-   GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + inmsn, outdir + '/' + finalgml)
+   GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + inmsn, outdir + '/' + finalgml, outdir + '/' + freport)
 else:
    GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + inmsn, outdir + '/' + finalgml, outdir + '/' + freport, flocal)
 

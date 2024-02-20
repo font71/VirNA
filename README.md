@@ -66,11 +66,14 @@ The construction of the minimum spanning network is based on (Bandelt et al., 19
 
 In the figure is represented an exemplicative viral network where nodes labeled with A: includes only genomes belonging to the area under investigation, while nodes labeled with E: includes only genomes sampled outside the considered area. Subscript indicate the mutations carried by the haplotype V. Edge connecting A/E {V1, V2, V3} central node and E {V1, V2, V4, V5} is pruned because E does not contain haplotypes coming from geographical area A.
 
-### Performance
+### Benchmark
 
-Some trivial performance test was performed on a laptop equipped with 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz and 32 GB of RAM. VirNA was compared with other two tools, PopArt (<http://popart.otago.ac.nz/>) and Pegas (<http://ape-package.ird.fr/pegas.html>) considering only the execution times. The results are reported in the following table (the time is expressed in min:sec):
+Some trivial benchmark test was performed on a laptop equipped with 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz and 32 GB of RAM. VirNA was compared with other two tools, PopArt (<http://popart.otago.ac.nz/>) and Pegas (<http://ape-package.ird.fr/pegas.html>) considering only the execution times. The results are reported in the following table (the time is expressed in min:sec):
 
-|Sequence number |  PopArt  |  Pegas  |  VirNA  |
-| ---------------| -------- | ------- | ------- |
-|1000            | 22:37    | 4:34    | 1:05    |
-|2000            | 49:36    | 89:36   | 4:20    |
+|Sequence number |  PopArt            |  Pegas                                        |  VirNA   |
+| ---------------| ------------------ | --------------------------------------------- | -------- |
+|1000            | 00:03:00           | 00:03:25                                      | 00:00:52 |
+|2000            | 00:06:00           | 01:15:49                                      | 00:03:08 |
+|5000            | Data loading error | 09:00:43 network drawing stopped after 3 days | 00:18:16 |
+|10000           | Data loading error | Not recorded                                  | 01:12:11 |
+|15000           | Data loading error | Not recorded                                  | 02:44:43 |

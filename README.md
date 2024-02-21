@@ -68,7 +68,7 @@ In the figure is represented an exemplicative viral network where nodes labeled 
 
 ### Benchmark
 
-Some trivial benchmark test was performed on a laptop equipped with 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz and 32 GB of RAM. VirNA was compared with other two tools, PopArt (<http://popart.otago.ac.nz/>) and Pegas (<http://ape-package.ird.fr/pegas.html>) considering only the execution times. The results are reported in the following table (the time is expressed in min:sec):
+Some trivial benchmark test was performed on a server equipped with two AMD EPYC 32-Cores and 514 GB of RAM. VirNA was compared with other two tools, PopArt (<http://popart.otago.ac.nz/>) and Pegas (<http://ape-package.ird.fr/pegas.html>) considering only the execution times. The results are reported in the following table (the time is expressed in min:sec):
 
 |Sequence number |  PopArt            |  Pegas                                        |  VirNA   |
 | ---------------| ------------------ | --------------------------------------------- | -------- |

@@ -148,7 +148,8 @@ class MinimumSpanningNetwork:
 
                 # END EDIT Luca
                 
-                if not __same_component(CC, e[0], e[1], merge = True):
+                # if not __same_component(CC, e[0], e[1], merge = True):
+                if not __same_component(CC, e[0], e[1], merge = False):
                     #Removed by Luca (01/02/2023)
                     #eType = self.check_edge_type(e[0], e[1])
 

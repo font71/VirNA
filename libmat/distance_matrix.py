@@ -50,7 +50,8 @@ class Matrix:
                else:
                   v2 = gidnoeqdct[gids[equalvs[v2]]]
                
-               if not (v1, v2) in edgedone:
+               # if not (v1, v2) in edgedone: #and not (v2, v1) in edgedone:
+               if not (v1, v2) in edgedone and not (v2, v1) in edgedone: # write only half of the sqare matrix
                   edges.append([v1, v2])
                   edgedone.add((v1, v2))
                

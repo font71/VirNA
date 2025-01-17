@@ -8,6 +8,8 @@ import sys
 import pandas as pd
 import getopt
 import os
+import networkx as nx
+from libmat.analyzeComponents import AnalyzeGraph
 
 
 def usage():
@@ -22,9 +24,11 @@ def usage():
    print(" -t, --borderth INT")
    print("     The multiple alignment will be trimmed at both ends using this value(default value 90)")
    print(" -i, --maxiter INT")
-   print("     Maximum number of iterations to perform during MSN building")
+   print("     Maximum number of iterations to perform during MSN building (default: 100)")
    print(" -l, --local FILE")
    print("     File with local IDs")
+   print(" -n, --ccth INT")
+   print("     Minimum number of nodes of a connected component (default: 5)")
    print(" -h, --help")
    print("     Print this help")
    
@@ -42,9 +46,16 @@ freport = 'msn_report'
 writematrix = False
 th = 90
 maxiter = 100
+ccth = 5
 
+# sys.argv.append('-m')
+# sys.argv.append('out2/1_chosen_sequences_edited_NO_ID.fasta')
+# sys.argv.append('-o')
+# sys.argv.append('out2')
+# sys.argv.append('-i')
+# sys.argv.append('7')
 try:
-   opts, args = getopt.getopt(sys.argv[1:], "m:o:p:b:xi:l:h", ["msa=", "outdir=", "prefix=", "borderth=", "writematrix", "maxiter=", "local=", "help"])
+   opts, args = getopt.getopt(sys.argv[1:], "m:o:p:b:xi:l:n:h", ["msa=", "outdir=", "prefix=", "borderth=", "writematrix", "maxiter=", "local=", "ccth=", "help"])
 except getopt.GetoptError:
    usage()
    sys.exit()
@@ -63,6 +74,8 @@ for opt, arg in opts:
       maxiter = int(arg)
    elif opt in ('-l', '--local'):
       flocal = arg
+   elif opt in ('-n', '--ccth'):
+      ccth = int(arg)
    elif opt in ('-h', '--help'):
       usage()
       sys.exit(0)
@@ -99,10 +112,6 @@ mfh.close()
 mat = libdist.compare4(matrix)
 gids = list(matrix.keys())
 
-if writematrix:
-   df = pd.DataFrame(mat, index=gids, columns=gids)
-   df.to_csv(outdir + '/' + distf)
-
 Matrix(mat, gids, outdir + '/' + inmsn)
 
 msn = MinimumSpanningNetwork(outdir + '/' + inmsn, outdir + '/' + mutf)
@@ -110,9 +119,18 @@ g = msn.create_graph(maxIter = maxiter)
 msn.export_directed_graph(outdir + '/' + gmlf)
 
 if flocal is None:
-   GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + inmsn, outdir + '/' + finalgml, outdir + '/' + freport)
+   gmlp = GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + inmsn, outdir + '/' + freport)
 else:
-   GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + inmsn, outdir + '/' + finalgml, outdir + '/' + freport, flocal)
+   gmlp = GMLParser(outdir + '/' + gmlf, outdir + '/' + mutf, outdir + '/' + inmsn, outdir + '/' + freport, flocal)
+nx.write_gml(gmlp.get_graph(), outdir + '/' + finalgml)
+
+df = pd.DataFrame(mat, index=gids, columns=gids)
+AnalyzeGraph(gmlp.get_graph(), df, ccth, gids, outdir + '/' + freport)
+
+if writematrix:
+#   df = pd.DataFrame(mat, index=gids, columns=gids)
+   df.to_csv(outdir + '/' + distf)
+
 
 os.remove(outdir + '/' + inmsn)
 os.remove(outdir + '/' + gmlf)

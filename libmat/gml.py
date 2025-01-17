@@ -5,9 +5,10 @@ import ast
 
 
 class GMLParser:
-    def __init__(self, fgml, mutf, finmsn, outgml, freport, flocal=None):
+    def __init__(self, fgml, mutf, finmsn, freport, flocal=None):
         nodedates = dict()
-
+        global g
+        
         self.meta, self.mutations = self.read_mutations(mutf)
         self.identicalnodes = self.read_inmsn(finmsn)
 
@@ -101,7 +102,7 @@ class GMLParser:
                         fh.write(srcid + ' (' + pl1  + ') -> ' + trgid + ' (' + pl2  + ')' + '\tMay be an exit point, but date are not congruents\n')
                 
             fh.close()
-        nx.write_gml(g, outgml)
+#        nx.write_gml(g, outgml)
 
     def sort_date(self, node, nodeid):
         if nodeid in self.identicalnodes:
@@ -190,6 +191,9 @@ class GMLParser:
 
         return identicalnodes
 
+    def get_graph(self):
+        return g
+    
 if __name__ == "__main__":
     GMLParser('../out/tn-tmp_msn.gml', '../out/tn-variants', '../out/tn-inmsn', '../out/tn-msn.gml', '../out/report', '../local')
     # GMLParser('../out/33-tmp_msn.gml', '../out/33-variants', '../out/33-inmsn', '../out/33-msn.gml')

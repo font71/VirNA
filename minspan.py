@@ -51,10 +51,10 @@ maxiter = 100
 ccth = 5
 maxdist = 6
 
-sys.argv.append('-m')
-sys.argv.append('out2/1_chosen_sequences_edited_NO_ID.fasta')
-sys.argv.append('-o')
-sys.argv.append('out2')
+# sys.argv.append('-m')
+# sys.argv.append('out2/1_chosen_sequences_edited_NO_ID.fasta')
+# sys.argv.append('-o')
+# sys.argv.append('out2')
 # sys.argv.append('-i')
 # sys.argv.append('7')
 try:

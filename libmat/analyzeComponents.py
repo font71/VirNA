@@ -5,7 +5,7 @@ import os.path
 
 
 class AnalyzeGraph:
-    def __init__(self, g: nx.DiGraph, df: pd.DataFrame, numth, gids, freport):
+    def __init__(self, g: nx.DiGraph, df: pd.DataFrame, numth, maxdist, gids, freport):
         indx = dict(zip(gids, list(range(len(gids)))))
         minccdict = dict()
         header = '################Isolated Nodes Analysis#################################\n'
@@ -23,26 +23,24 @@ class AnalyzeGraph:
         
         fh.write('Node\tNode at min HD\tHD\tConnected Component Nodes\n')
         for mincc in minccdict:
-            fh.write(mincc[0] + '\t' + mincc[1] + '\t' + str(mincc[2]) + '\t' + str(minccdict[mincc]) + '\n')
+            if mincc[2] <= maxdist:
+                fh.write(mincc[0] + '\t' + mincc[1] + '\t' + str(mincc[2]) + '\t' + str(minccdict[mincc]) + '\n')
 
         fh.close()
 
     def analyze(self, cc, df, indx):
-        buffer = ('', '', sys.maxsize)
+        mindist = ('', '', sys.maxsize)
 
         for node in cc:
-            mindist = ('', '', sys.maxsize)
-
             i = indx[node]
-            for j in df[node]:
+            for j in range(len(indx)):
+                if i == j:
+                    continue
                 dist = df.iloc[i, j]
                 if dist == -1:
                     dist = df.iloc[j, i]
                 if dist < mindist[2]:
                     mindist = (node, df.index[j], dist)
 
-            if mindist[2] < buffer[2]:
-                buffer = mindist
-
-        return buffer
+        return mindist
             

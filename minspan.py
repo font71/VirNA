@@ -29,6 +29,8 @@ def usage():
    print("     File with local IDs")
    print(" -n, --ccth INT")
    print("     Minimum number of nodes of a connected component (default: 5)")
+   print(" -d, --maxdist INT")
+   print("     Maximum edit distance value to consider for the connected component (default: 6)")
    print(" -h, --help")
    print("     Print this help")
    
@@ -47,15 +49,16 @@ writematrix = False
 th = 90
 maxiter = 100
 ccth = 5
+maxdist = 6
 
-# sys.argv.append('-m')
-# sys.argv.append('out2/1_chosen_sequences_edited_NO_ID.fasta')
-# sys.argv.append('-o')
-# sys.argv.append('out2')
+sys.argv.append('-m')
+sys.argv.append('out2/1_chosen_sequences_edited_NO_ID.fasta')
+sys.argv.append('-o')
+sys.argv.append('out2')
 # sys.argv.append('-i')
 # sys.argv.append('7')
 try:
-   opts, args = getopt.getopt(sys.argv[1:], "m:o:p:b:xi:l:n:h", ["msa=", "outdir=", "prefix=", "borderth=", "writematrix", "maxiter=", "local=", "ccth=", "help"])
+   opts, args = getopt.getopt(sys.argv[1:], "m:o:p:b:xi:l:n:d:h", ["msa=", "outdir=", "prefix=", "borderth=", "writematrix", "maxiter=", "local=", "ccth=", "maxdist=", "help"])
 except getopt.GetoptError:
    usage()
    sys.exit()
@@ -76,6 +79,8 @@ for opt, arg in opts:
       flocal = arg
    elif opt in ('-n', '--ccth'):
       ccth = int(arg)
+   elif opt in ('-d', '--maxdist'):
+      maxdist = int(arg)
    elif opt in ('-h', '--help'):
       usage()
       sys.exit(0)
@@ -125,7 +130,7 @@ else:
 nx.write_gml(gmlp.get_graph(), outdir + '/' + finalgml)
 
 df = pd.DataFrame(mat, index=gids, columns=gids)
-AnalyzeGraph(gmlp.get_graph(), df, ccth, gids, outdir + '/' + freport)
+AnalyzeGraph(gmlp.get_graph(), df, ccth, maxdist, gids, outdir + '/' + freport)
 
 if writematrix:
 #   df = pd.DataFrame(mat, index=gids, columns=gids)

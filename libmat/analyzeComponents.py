@@ -39,7 +39,7 @@ class AnalyzeGraph:
                 dist = df.iloc[i, j]
                 if dist == -1:
                     dist = df.iloc[j, i]
-                if dist < mindist[2]:
+                if dist < mindist[2] and df.index[j] not in cc:
                     mindist = (node, df.index[j], dist)
 
         return mindist

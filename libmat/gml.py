@@ -78,11 +78,25 @@ class GMLParser:
                 if nodedates[srcid]['location'] == 'mixed':
                     if not srcid in done:
                         pl1 = self.meta[srcid][1] + '. ' + self.meta[srcid][2].strftime("%Y-%d-%m")
-                        pl2 = self.meta[nodedates[srcid]['startnode']][1] + ', ' + self.meta[nodedates[srcid]['startnode']][2].strftime("%Y-%d-%m")
-                        if self.meta[srcid][2] <= self.meta[nodedates[srcid]['startnode']][2]:
-                            fh.write(srcid + ' (' + pl1  + ') -> ' + nodedates[srcid]['startnode'] + ' (' + pl2  + ')' + '\tExit point mixed\n')
-                        else:
-                            fh.write(nodedates[srcid]['startnode'] + ' (' + pl2  + ')' + ' -> ' + srcid + ' (' + pl1  + ')' + '\tEntry point mixed\n')
+                        nlo = 0
+                        nex = 0
+                        for m in nodedates[srcid]['sortednodes']:
+                            nid = m[0]
+                            if nid in self.local and nlo == 0:
+                                pl2 = self.meta[nid][1] + ', ' + self.meta[nid][2].strftime("%Y-%d-%m")
+                                fh.write(srcid + ' (' + pl1  + ') -> ' + nid + ' (' + pl2  + ')' + '\tEntry point mixed\n')
+                                nlo = 1
+                            elif nid not in self.local and nex == 0:
+                                pl2 = self.meta[nid][1] + ', ' + self.meta[nid][2].strftime("%Y-%d-%m")
+                                fh.write(srcid + ' (' + pl1  + ') -> ' + nid + ' (' + pl2  + ')' + '\tExit point mixed\n')
+                                nex = 1
+
+                        # pl1 = self.meta[srcid][1] + '. ' + self.meta[srcid][2].strftime("%Y-%d-%m")
+                        # pl2 = self.meta[nodedates[srcid]['startnode']][1] + ', ' + self.meta[nodedates[srcid]['startnode']][2].strftime("%Y-%d-%m")
+                        # if self.meta[srcid][2] <= self.meta[nodedates[srcid]['startnode']][2]:
+                        #     fh.write(srcid + ' (' + pl1  + ') -> ' + nodedates[srcid]['startnode'] + ' (' + pl2  + ')' + '\tExit point mixed\n')
+                        # else:
+                        #     fh.write(nodedates[srcid]['startnode'] + ' (' + pl2  + ')' + ' -> ' + srcid + ' (' + pl1  + ')' + '\tEntry point mixed\n')
                         done.add(srcid)
 
                 if nodedates[srcid]['location'] == 'ext' and nodedates[trgid]['location'] == 'local':
@@ -91,7 +105,7 @@ class GMLParser:
                     if self.meta[srcid][2] <= self.meta[nodedates[trgid]['startnode']][2]:
                         fh.write(srcid  + ' (' + pl1  + ') -> ' + trgid + ' (' + pl2  + ')' + '\tEntry point\n')
                     else:
-                        fh.write(srcid + ' (' + pl1  + ') -> ' + trgid + ' (' + pl2  + ')' + '\tMay be an entry point, but dates are not congruents\n')
+                        fh.write(srcid + ' (' + pl1  + ') -> ' + trgid + ' (' + pl2  + ')' + '\tMay be an entry point, but dates are not congruent\n')
 
                 if nodedates[srcid]['location'] == 'local' and nodedates[trgid]['location'] == 'ext':
                     pl1 = self.meta[srcid][1] + ', ' + self.meta[srcid][2].strftime("%Y-%d-%m")
@@ -99,7 +113,7 @@ class GMLParser:
                     if self.meta[srcid][2] <= self.meta[nodedates[trgid]['startnode']][2]:
                         fh.write(srcid + ' (' + pl1  + ') -> ' + trgid + ' (' + pl2  + ')' + '\tExit point\n')
                     else:
-                        fh.write(srcid + ' (' + pl1  + ') -> ' + trgid + ' (' + pl2  + ')' + '\tMay be an exit point, but date are not congruents\n')
+                        fh.write(srcid + ' (' + pl1  + ') -> ' + trgid + ' (' + pl2  + ')' + '\tMay be an exit point, but date are not congruent\n')
                 
             fh.close()
 #        nx.write_gml(g, outgml)
@@ -129,7 +143,7 @@ class GMLParser:
 
                 dp = '; '.join([','.join((tup1 , tup2, tup3.strftime('%Y-%m-%d'))) for (tup1, tup2, tup3) in metaslice])
                 node['identicalnodes'] = dp
-                return {'startnode': metaslice[0][0], 'endnode': metaslice[-1][0], 'location': loc}
+                return {'startnode': metaslice[0][0], 'endnode': metaslice[-1][0], 'location': loc, 'sortednodes': metaslice}
 
         if nodeid in self.local:
             loc = 'local'
@@ -195,5 +209,6 @@ class GMLParser:
         return g
     
 if __name__ == "__main__":
-    GMLParser('../out/tn-tmp_msn.gml', '../out/tn-variants', '../out/tn-inmsn', '../out/tn-msn.gml', '../out/report', '../local')
+    GMLParser('../../padova/out/tmp_msn.gml', '../../padova/out/variants', '../../padova/out/inmsn', '../../padova/out/msn.gml', '../../padova/Headers_to_cons_NO_N.txt')
+    # GMLParser('../out/tn-tmp_msn.gml', '../out/tn-variants', '../out/tn-inmsn', '../out/tn-msn.gml', '../out/report', '../local')
     # GMLParser('../out/33-tmp_msn.gml', '../out/33-variants', '../out/33-inmsn', '../out/33-msn.gml')

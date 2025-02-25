@@ -1,6 +1,6 @@
 # VirNA
 
- VirNA (Viral Network Analyzer) is a tool developed to provide an instrument able to reconstruct patterns of contagions and spread of a virus in a particular region of interest helping to individuate possible routes of entrance or exit followed by the pathogen. The tool can analyze thousands of genomic sequences starting from a multiple alignment in fasta format and as output it produces a gml network file with date and location of sampling of every viral genome reported on each graph node.
+ VirNA (Viral Network Analyzer) 1.0 is a tool developed to provide an instrument able to reconstruct patterns of contagions and spread of a virus in a particular region of interest helping to individuate possible routes of entrance or exit followed by the pathogen. The tool can analyze thousands of genomic sequences starting from a multiple alignment in fasta format and as output it produces a gml network file with date and location of sampling of every viral genome reported on each graph node.
  The multiple alignment header file must have the following format:
  \>Location/IDentifier/date
 
@@ -10,7 +10,7 @@ To be installed VirNA requiree python 3 (<https://www.python.org/>) and the inst
 
 pip3 install numpy  
 pip3 install pandas  
-pip3 install networkx  
+pip3 install networkx==1.23.5  
 pip3 install biopython  
 pip3 install cython  
 pip3 install python-igraph  
@@ -20,9 +20,9 @@ cd VirNA/libmat
 
 python3 setup.py build_ext --inplace
 
-To test that the tool is working properly do the following:
-cd ..
-./minspan.py -m 1000.fasta
+To test that the tool is working properly do the following:  
+./minspan.py -m 1000.fasta  
+The file 1000.fasta is provided as zip archive in examples/example_files.zip  
 
 Two files should be written in the examples directory: msn.gml and variants. The first one contains the Minimum Spanning Network produced by the tool which can be visualized with specific network visualizers such as Cytoscape (<https://cytoscape.org/>). The second one contains all the mutations individuated in the analyzed genome sequences.
 

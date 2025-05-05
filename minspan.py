@@ -21,7 +21,7 @@ def usage():
    print("     The string to attach to every output files (default: \"\")")
    print(" -x, --matrix")
    print("     Dumps edit distance matrix")
-   print(" -t, --borderth INT")
+   print(" -b, --borderth INT")
    print("     The multiple alignment will be trimmed at both ends using this value(default value 90)")
    print(" -i, --maxiter INT")
    print("     Maximum number of iterations to perform during MSN building (default: 100)")
